@@ -10,7 +10,7 @@ st.set_page_config(page_title="Leitura MVP", page_icon="🎙️", layout="wide")
 st.title("🎙️ Motor de Avaliação de Leitura (MVP)")
 
 WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwaBC2f1R10P3RSxJVoazh7nTKT2NzA4Goz-abmjml0S81g1wpYExry4ic_WhKfzI0d/exec"
-
+               
 ARQUIVOS_DRIVE = {
     "Minha Casa": "https://docs.google.com/document/d/177yW8EjrHvllEc3kQBuulYCxvb6bpcquc7t8DbNVZY4/edit",
     "Meu Barco": "https://docs.google.com/document/d/1rzo5imfn3IzQ_dkIDOQi2ScEATn1aPIKd6usnrk6rOw/edit"
