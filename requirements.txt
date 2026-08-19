@@ -2,3 +2,4 @@ streamlit
 SpeechRecognition
 jiwer
 audio-recorder-streamlit
+requests
