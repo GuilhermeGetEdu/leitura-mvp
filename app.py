@@ -12,9 +12,10 @@ st.title("🎙️ Motor de Avaliação de Leitura (MVP)")
 WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbx_SEU_WEBHOOK_AQUI/exec"
 
 # Mapeamento fixo dos textos presentes na pasta do Google Drive
+# Mapeamento dos arquivos da pasta pública
 ARQUIVOS_DRIVE = {
     "Minha Casa": "https://docs.google.com/document/d/177yW8EjrHvlIEc3kQBuulYCxb6bpcquc7t8DbNVZY4/edit",
-    "https://docs.google.com/document/d/1rzo5imfn3IzQ_dkIDOQi2ScEATn1aPIKd6usnrk6rOw/edit"
+    "A BONECA-BEBÊ": "https://docs.google.com/document/d/1rzo5imfn3IzQ_dkIDOQi2ScEATn1aPIKd6usnrk6r0w/edit"
 }
 
 # Formulário Inicial
