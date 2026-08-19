@@ -4,17 +4,16 @@ import jiwer
 from audio_recorder_streamlit import audio_recorder
 import io
 import requests
+import base64
 
 st.set_page_config(page_title="Leitura MVP", page_icon="🎙️", layout="wide")
 st.title("🎙️ Motor de Avaliação de Leitura (MVP)")
 
-# Cole a URL do seu Apps Script implantado aqui
-WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwaBC2f1R10P3RSxJVoazh7nTKT2NzA4Goz-abmjml0S81g1wpYExry4ic_WhKfzI0d/exec"
+WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyegeWKhgCfpxpAlGVjaphTRXWle1HEdlMe5bvgsw0V-Gvzx9mhLUfULspOG_PSYNc9/exec"
 
-# Mapeamento dos arquivos da pasta do Drive
 ARQUIVOS_DRIVE = {
-    "Minha Casa": "https://docs.google.com/document/d/177yW8EjrHvllEc3kQBuulYCxvb6bpcquc7t8DbNVZY4/edit",
-    "Meu Barco": "https://docs.google.com/document/d/1rzo5imfn3IzQ_dkIDOQi2ScEATn1aPIKd6usnrk6rOw/edit"
+    "Minha Casa": "https://docs.google.com/document/d/177yW8EjrHvlIEc3kQBuulYCxb6bpcquc7t8DbNVZY4/edit",
+    "Meu Barco": "https://docs.google.com/document/d/1rzo5imfn3IzQ_dkIDOQi2ScEATn1aPIKd6usnrk6r0w/edit"
 }
 
 # Dados do Estudante
@@ -38,7 +37,6 @@ texto_original = ""
 if doc_link and WEBHOOK_URL:
     try:
         doc_id = doc_link.split("/d/")[1].split("/")[0] if "/d/" in doc_link else doc_link.strip()
-        # Busca o texto via Apps Script
         resp = requests.get(f"{WEBHOOK_URL}?id={doc_id}")
         if resp.status_code == 200 and not resp.text.startswith("Erro:"):
             texto_original = resp.text.strip()
@@ -49,7 +47,6 @@ if doc_link and WEBHOOK_URL:
 
 st.write("---")
 
-# Área de Leitura e Gravação Lado a Lado
 if texto_original:
     col_texto, col_gravacao = st.columns([2, 1], gap="large")
     
@@ -73,7 +70,7 @@ if texto_original:
         if audio_bytes:
             st.audio(audio_bytes, format="audio/wav")
             
-            with st.spinner("Analisando fluência..."):
+            with st.spinner("Analisando e salvando áudio..."):
                 r = sr.Recognizer()
                 audio_file = io.BytesIO(audio_bytes)
                 with sr.AudioFile(audio_file) as source:
@@ -102,6 +99,9 @@ if texto_original:
                     st.metric("WPM", wpm)
                     st.metric("Tempo", f"{round(duracao_segundos)}s")
                     
+                    # Converte o áudio bruto para Base64 para envio via Webhook
+                    audio_b64 = base64.b64encode(audio_bytes).decode('utf-8')
+                    
                     payload = {
                         "email": user_email,
                         "idade": idade,
@@ -110,12 +110,13 @@ if texto_original:
                         "accuracy": accuracy,
                         "tempo": round(duracao_segundos),
                         "dificuldades": str_struggled,
-                        "link_doc": doc_link
+                        "link_doc": doc_link,
+                        "audio_base64": audio_b64
                     }
                     
                     try:
                         requests.post(WEBHOOK_URL, json=payload)
-                        st.info("📊 Salvo na Coluna I da planilha!")
+                        st.info("📊 Métrica e link do áudio salvos no Google Drive e Planilha!")
                     except:
                         pass
                         
