@@ -14,7 +14,7 @@ WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwaBC2f1R10P3RSxJVoazh7nT
 # Mapeamento dos arquivos da pasta do Drive
 ARQUIVOS_DRIVE = {
     "Minha Casa": "https://docs.google.com/document/d/177yW8EjrHvllEc3kQBuulYCxvb6bpcquc7t8DbNVZY4/edit",
-    "A BONECA-BEBÊ": "https://docs.google.com/document/d/1rzo5imfn3IzQ_dkIDOQi2ScEATn1aPIKd6usnrk6rOw/edit"
+    "Meu Barco": "https://docs.google.com/document/d/1rzo5imfn3IzQ_dkIDOQi2ScEATn1aPIKd6usnrk6rOw/edit"
 }
 
 # Dados do Estudante
