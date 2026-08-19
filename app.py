@@ -8,16 +8,16 @@ import requests
 st.set_page_config(page_title="Leitura MVP", page_icon="🎙️", layout="wide")
 st.title("🎙️ Motor de Avaliação de Leitura (MVP)")
 
-# URL do Webhook da Planilha (Verifique se é o seu link ativo do Apps Script)
+# Cole a URL do seu Apps Script implantado aqui
 WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbx_SEU_WEBHOOK_AQUI/exec"
 
-# Mapeamento dos textos da pasta do Google Drive
+# Mapeamento dos arquivos da pasta do Drive
 ARQUIVOS_DRIVE = {
     "Minha Casa": "https://docs.google.com/document/d/177yW8EjrHvlIEc3kQBuulYCxb6bpcquc7t8DbNVZY4/edit",
     "A BONECA-BEBÊ": "https://docs.google.com/document/d/1rzo5imfn3IzQ_dkIDOQi2ScEATn1aPIKd6usnrk6r0w/edit"
 }
 
-# Cabeçalho: Dados do Aluno
+# Dados do Estudante
 col1, col2, col3 = st.columns(3)
 with col1:
     user_email = st.text_input("E-mail do Avaliador:", "guilherme@getedu.com.br")
@@ -28,24 +28,24 @@ with col3:
 
 # Seleção do Texto
 opcao_selecionada = st.selectbox(
-    "📚 Escolha o texto da pasta para a leitura:",
+    "📚 Escolha o texto para a leitura:",
     options=list(ARQUIVOS_DRIVE.keys())
 )
 
 doc_link = ARQUIVOS_DRIVE[opcao_selecionada]
 texto_original = ""
 
-if doc_link:
+if doc_link and WEBHOOK_URL:
     try:
         doc_id = doc_link.split("/d/")[1].split("/")[0] if "/d/" in doc_link else doc_link.strip()
-        export_url = f"https://docs.google.com/document/d/{doc_id}/export?format=txt"
-        resp = requests.get(export_url)
-        if resp.status_code == 200:
+        # Busca o texto via Apps Script
+        resp = requests.get(f"{WEBHOOK_URL}?id={doc_id}")
+        if resp.status_code == 200 and not resp.text.startswith("Erro:"):
             texto_original = resp.text.strip()
         else:
-            st.error("Não foi possível baixar o texto. Verifique se o arquivo está compartilhado como 'Qualquer pessoa com o link'.")
-    except Exception:
-        st.error("Erro ao conectar com o Google Drive.")
+            st.error(f"Erro ao carregar o documento: {resp.text}")
+    except Exception as e:
+        st.error(f"Erro de conexão: {e}")
 
 st.write("---")
 
