@@ -9,7 +9,7 @@ st.set_page_config(page_title="Leitura MVP", page_icon="🎙️", layout="wide")
 st.title("🎙️ Motor de Avaliação de Leitura (MVP)")
 
 # Cole a URL do seu Apps Script implantado aqui
-WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbx_SEU_WEBHOOK_AQUI/exec"
+WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwaBC2f1R10P3RSxJVoazh7nTKT2NzA4Goz-abmjml0S81g1wpYExry4ic_WhKfzI0d/exec"
 
 # Mapeamento dos arquivos da pasta do Drive
 ARQUIVOS_DRIVE = {
